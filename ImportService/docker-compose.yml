@@ -1,0 +1,27 @@
+version: "3"
+services: 
+  import-service:
+    image: import-service
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - mysqldb
+    environment: 
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root 
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/fileDb?useSSL=false&allowPublicKeyRetrieval=true
+         
+  mysqldb: 
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: fileDb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - 3306:3306
+    restart: always
+  
